@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Extrapkg_Contacter>
+            <version>0.1.0</version>
+        </Extrapkg_Contacter>
+    </modules>
+    <frontend>
+        <routers>
+            <contacter>
+                <use>standard</use>
+                <args>
+                    <module>Extrapkg_Contacter</module>
+                    <frontName>contacter</frontName>
+                </args>
+            </contacter>
+        </routers>
+        <layout>
+            <updates>
+                <contacter>
+                    <file>contacter.xml</file>
+                </contacter>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+			<contacter>
+				<use>admin</use>
+				<args>
+					<module>Extrapkg_Contacter</module>
+					<frontName>contacter</frontName>
+				</args>
+			</contacter>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			<contacter module="contacter">
+				<title>Contacter</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="contacter">
+						<title>Product Enquiry</title>
+						<sort_order>0</sort_order>
+						<action>contacter/adminhtml_contacter</action>
+					</items>
+					<opportunities module="contacter">
+						<title>Business Opportunities</title>
+						<sort_order>1</sort_order>
+						<action>contacter/adminhtml_opportunities</action>
+					</opportunities>
+					<corporatesales module="contacter">
+						<title>Corporate Sales</title>
+						<sort_order>2</sort_order>
+						<action>contacter/adminhtml_corporatesales</action>
+					</corporatesales>
+					<feedback module="contacter">
+						<title>Feedback &amp; Comments</title>
+						<sort_order>3</sort_order>
+						<action>contacter/adminhtml_feedback</action>
+					</feedback>
+					<rmarequest module="contacter">
+						<title>RMA Request</title>
+						<sort_order>4</sort_order>
+						<action>contacter/adminhtml_rmarequest</action>
+					</rmarequest>
+					<wholesale module="contacter">
+						<title>Wholesale</title>
+						<sort_order>5</sort_order>
+						<action>contacter/adminhtml_wholesale</action>
+					</wholesale>
+				</children>
+			</contacter>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<Extrapkg_Contacter>
+							<title>Contacter Module</title>
+							<sort_order>10</sort_order>
+						</Extrapkg_Contacter>
+						<system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <contacterconfiguration translate="title" module="contacter">
+                                            <title>Contacter configuration</title>
+                                            <sort_order>808</sort_order>
+                                        </contacterconfiguration>                                        
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<contacter>
+					<file>contacter.xml</file>
+				</contacter>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <contacter>
+                <class>Extrapkg_Contacter_Model</class>
+                <resourceModel>contacter_mysql4</resourceModel>
+            </contacter>
+            <contacter_mysql4>
+                <class>Extrapkg_Contacter_Model_Mysql4</class>
+                <entities>
+                    <contacter>
+                        <table>contacter</table>
+                    </contacter>
+                </entities>
+            </contacter_mysql4>
+        </models>
+		<template>
+            <email>
+               <contacterconfiguration_general_email_template translate="label" module="contacter">
+                   <label>Make an offer</label>
+                   <file>make_offer_email.html</file>
+                   <type>html</type>
+               </contacterconfiguration_general_email_template>
+			</email>
+		</template>
+        <resources>
+            <contacter_setup>
+                <setup>
+                    <module>Extrapkg_Contacter</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </contacter_setup>
+            <contacter_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </contacter_write>
+            <contacter_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </contacter_read>
+        </resources>
+        <blocks>
+            <contacter>
+                <class>Extrapkg_Contacter_Block</class>
+            </contacter>			
+        </blocks>
+        <helpers>
+            <contacter>
+                <class>Extrapkg_Contacter_Helper</class>
+            </contacter>
+        </helpers>
+    </global>
+</config>
