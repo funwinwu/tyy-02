@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Uplai_Customerenhance>
+            <version>0.1.0</version>
+        </Uplai_Customerenhance>
+    </modules>
+    <frontend>
+        <routers>
+            <customerenhance>
+                <use>standard</use>
+                <args>
+                    <module>Uplai_Customerenhance</module>
+                    <frontName>customerenhance</frontName>
+                </args>
+            </customerenhance>
+        </routers>
+
+    </frontend>
+
+    <global> 
+		<models>
+            <customerenhance>
+                <class>Uplai_Customerenhance_Model</class>
+            </customerenhance>           
+        </models>
+        <resources>           
+            <customerenhance_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </customerenhance_write>
+            <customerenhance_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </customerenhance_read>
+        </resources>        
+        <helpers>
+            <customerenhance>
+                <class>Uplai_Customerenhance_Helper</class>
+            </customerenhance>
+        </helpers>		
+		
+    </global>
+</config>
