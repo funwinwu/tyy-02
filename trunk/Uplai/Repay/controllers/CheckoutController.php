@@ -33,8 +33,7 @@ class Uplai_Repay_CheckoutController extends Mage_Core_Controller_Front_Action
     	ob_start();
     	$this->setOrder();
     	$order = Mage::getSingleton('checkout/session')->getOrder();
-    	echo $order->getIncrementId();
-    	exit();
+    	
     	Mage::getSingleton('checkout/session')->setLastRealOrderId( $order->getIncrementId() );
     	if ($data = $this->getRequest()->getPost('payment', false)) {
     		$payment = Mage::getModel("repay/order_payment");
