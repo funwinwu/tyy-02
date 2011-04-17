@@ -124,6 +124,12 @@
             </repay>
         </helpers>
 		<rewrite>
+			<uplai_repay_onepage3>
+				<from><![CDATA[#^/checkout/onepage/#]]></from>
+				<to>/repay/onepage3/</to>
+			</uplai_repay_onepage3>	
+		</rewrite>	
+		<rewrite>
 			<uplai_repay_onepage>
 				<from><![CDATA[#^/checkout/onepage/savePayment/#]]></from>
 				<to>/repay/onepage/savePayment/</to>

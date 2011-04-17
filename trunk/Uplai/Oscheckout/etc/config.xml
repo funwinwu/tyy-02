@@ -81,6 +81,55 @@
 		</layout>
     </adminhtml>   
     <global>
+		<fieldsets>
+			<sales_convert_quote_address>
+                <weight><to_order>*</to_order></weight>
+                <shipping_method><to_order>*</to_order></shipping_method>
+                <shipping_description><to_order>*</to_order></shipping_description>
+                <shipping_rate><to_order>*</to_order></shipping_rate>
+
+                <subtotal><to_order>*</to_order></subtotal>
+                <tax_amount><to_order>*</to_order></tax_amount>
+                <tax_string><to_order>*</to_order></tax_string>
+                <discount_amount><to_order>*</to_order></discount_amount>
+                <shipping_amount><to_order>*</to_order></shipping_amount>
+                <shipping_incl_tax><to_order>*</to_order></shipping_incl_tax>
+                <shipping_tax_amount><to_order>*</to_order></shipping_tax_amount>
+                <custbalance_amount><to_order>*</to_order></custbalance_amount>
+                <grand_total><to_order>*</to_order></grand_total>
+
+                <base_subtotal><to_order>*</to_order></base_subtotal>
+                <base_tax_amount><to_order>*</to_order></base_tax_amount>
+                <base_discount_amount><to_order>*</to_order></base_discount_amount>
+                <base_shipping_amount><to_order>*</to_order></base_shipping_amount>
+                <base_shipping_incl_tax><to_order>*</to_order></base_shipping_incl_tax>
+                <base_shipping_tax_amount><to_order>*</to_order></base_shipping_tax_amount>
+                <base_custbalance_amount><to_order>*</to_order></base_custbalance_amount>
+                <base_grand_total><to_order>*</to_order></base_grand_total>
+
+                <hidden_tax_amount><to_order>*</to_order></hidden_tax_amount>
+                <base_hidden_tax_amount><to_order>*</to_order></base_hidden_tax_amount>
+                <shipping_hidden_tax_amount><to_order>*</to_order></shipping_hidden_tax_amount>
+                <base_shipping_hidden_tax_amount><to_order>*</to_order></base_shipping_hidden_tax_amount>
+
+                <prefix><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></prefix>
+                <firstname><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></firstname>
+                <middlename><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></middlename>
+                <lastname><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></lastname>
+                <suffix><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></suffix>
+                <company><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></company>
+                <street_full><to_order_address>street</to_order_address></street_full>
+                <street><to_customer_address>*</to_customer_address></street><!-- ^^^ ? -->
+                <city><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></city>
+                <region><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></region>
+                <region_id><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></region_id>
+                <postcode><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></postcode>
+                <country_id><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></country_id>
+                <telephone><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></telephone>
+                <fax><to_order_address>*</to_order_address><to_customer_address>*</to_customer_address></fax>
+                <email><to_customer_address>*</to_customer_address></email>
+            </sales_convert_quote_address>
+		</fieldsets>
         <models>
             <oscheckout>
                 <class>Uplai_Oscheckout_Model</class>
@@ -99,6 +148,7 @@
             <oscheckout_setup>
                 <setup>
                     <module>Uplai_Oscheckout</module>
+					<class>Mage_Sales_Model_Mysql4_Setup</class>
                 </setup>
                 <connection>
                     <use>core_setup</use>

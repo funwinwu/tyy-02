@@ -358,7 +358,8 @@ class Uplai_Oscheckout_Model_Onestep
         //convert city
         $data['lastname'] = '.';
         $data['city'] = Mage::getModel("customerenhance/city")->getCityById( $data['city_id'] );
-        //$data['street'][0] = Mage::getModel("customerenhance/city")->getDistrictById( $data['district_id'] ).$data['street'][0];
+        if( $data['district_id'] )
+        	$data['district'] = Mage::getModel("customerenhance/city")->getDistrictById( $data['district_id'] );
         
         $address = $this->getQuote()->getShippingAddress();
 
@@ -376,6 +377,9 @@ class Uplai_Oscheckout_Model_Onestep
             unset($data['address_id']);
             $address->addData($data);
         }
+        //echo ReflectionObject::export( $address );
+        //print_r( $address->getData() );
+        //exit();
         $address->implodeStreetAddress();
         $address->setCollectShippingRates(true);
 
