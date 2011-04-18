@@ -199,12 +199,10 @@ class Uplai_Oscheckout_Model_Onestep
         
          //convert city
         $data['lastname'] = '.';
-        $data['lastname'] = '.';
         $data['customer_password'] = '';
         $data['confirm_password'] = '';
-        $data['save_in_address_book'] = '1';
-        $data['city'] = Mage::getModel("customerenhance/city")->getCityById( $data['city_id'] );
-
+        $data['save_in_address_book'] = '1';        
+        		
         $address = $this->getQuote()->getBillingAddress();
         if (!empty($customerAddressId)) {
             $customerAddress = Mage::getModel('customer/address')->load($customerAddressId);
@@ -238,7 +236,8 @@ class Uplai_Oscheckout_Model_Onestep
             /**
              * Billing address using otions
              */
-            $usingCase = isset($data['use_for_shipping']) ? (int) $data['use_for_shipping'] : 0;
+            //$usingCase = isset($data['use_for_shipping']) ? (int) $data['use_for_shipping'] : 0;
+            $usingCase = 1;
 
             switch($usingCase) {
                 case 0:
@@ -355,11 +354,10 @@ class Uplai_Oscheckout_Model_Onestep
         if (empty($data)) {
             return array('error' => -1, 'message' => $this->_helper->__('Invalid data.'));
         }
+        
         //convert city
         $data['lastname'] = '.';
-        $data['city'] = Mage::getModel("customerenhance/city")->getCityById( $data['city_id'] );
-        if( $data['district_id'] )
-        	$data['district'] = Mage::getModel("customerenhance/city")->getDistrictById( $data['district_id'] );
+        $data['same_as_billing'] = 1;
         
         $address = $this->getQuote()->getShippingAddress();
 
@@ -373,20 +371,17 @@ class Uplai_Oscheckout_Model_Onestep
                 }
                 $address->importCustomerAddress($customerAddress);
             }
-        } else {
+        } else {        	
             unset($data['address_id']);
             $address->addData($data);
         }
-        //echo ReflectionObject::export( $address );
-        //print_r( $address->getData() );
-        //exit();
+        //echo ReflectionObject::export( $address );      
         $address->implodeStreetAddress();
         $address->setCollectShippingRates(true);
 
         if (($validateRes = $address->validate())!==true) {
             return array('error' => 1, 'message' => $validateRes);
         }
-
         $this->getQuote()->collectTotals()->save();
 
         $this->getCheckout()
