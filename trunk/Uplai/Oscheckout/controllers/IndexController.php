@@ -64,6 +64,15 @@ class Uplai_Oscheckout_IndexController extends Mage_Checkout_OnepageController
         }
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost('shipping', array());
+            if( $data['city_id'] )
+            	$data['city'] = Mage::getModel("customerenhance/city")->getCityById( $data['city_id'] );
+			if( $data['district_id'] )
+	        	$data['district'] = Mage::getModel("customerenhance/city")->getDistrictById( $data['district_id'] );
+	        if( $data['region_id'] ){
+	        	$region = Mage::getModel("customerenhance/city")->getRegionById( $data['region_id'] );
+	        	$data['region'] = $region['name'];
+	        }	
+	       
             $customerAddressId = $this->getRequest()->getPost('shipping_address_id', false);
             $result_billing = $this->getOnestep()->saveBilling($this->_filterPostData($data), $customerAddressId);
             $result = $this->getOnestep()->saveShipping($data, $customerAddressId);
