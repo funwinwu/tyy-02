@@ -266,5 +266,20 @@ class Uplai_Oscheckout_IndexController extends Mage_Checkout_OnepageController
         Mage::dispatchEvent('checkout_onepage_controller_success_action');
         $this->renderLayout();
     }
-            
+    
+    /**
+     * Checkout status block
+     */
+    public function progressAction()
+    {
+    	$shipping = $this->getOnestep()->getQuote()->getShippingAddress();
+    	$shipping_method = $this->getOnestep()->getQuote()->getShippingAddress()->getShippingDescription();
+    	$info = $this->getOnestep()->getQuote()->getPayment();
+    	
+    	$response['shipping'] = $shipping->format('oneline');
+    	$response['shipping_method'] = $shipping_method;
+    	$response['payment'] = $info->getMethodInstance()->getTitle();
+    	echo json_encode( $response );
+    	
+    }           
 }
