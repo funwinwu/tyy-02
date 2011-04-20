@@ -278,7 +278,7 @@ class Uplai_Oscheckout_IndexController extends Mage_Checkout_OnepageController
     	
     	$response['shipping'] = $shipping->format('oneline');
     	$response['shipping_method'] = $shipping_method;
-    	$response['payment'] = $info->getMethodInstance()->getTitle();
+    	$response['payment'] = $info->getData('method')?$info->getMethodInstance()->getTitle():'';
     	echo json_encode( $response );
     	
     }           
