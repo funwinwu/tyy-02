@@ -49,7 +49,7 @@ class Extrapkg_Magicimport_Model_Magicimport_Product_Eav_Url extends Extrapkg_Ma
 	{
 		$replacor = $this->separator;
 		$key = strtolower( $key );
-		$key = eregi_replace( '[^a-z0-9.]',$replacor,$key );
+		$key = eregi_replace( '[^a-z0-9]',$replacor,$key );
 		$key = eregi_replace( '-+',$replacor,$key );
 		return $key;
 	}

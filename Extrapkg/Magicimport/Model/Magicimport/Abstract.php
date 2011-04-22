@@ -103,7 +103,7 @@ class Extrapkg_Magicimport_Model_Magicimport_Abstract extends Mage_Core_Model_Ab
     {
     	$new_data = array();
     	foreach( $data as $key => $var ){
-    		if( !empty( $key ) && !empty( $var ) ){
+    		if( !empty( $key ) ){
     			$new_data[ $key ] = addslashes($var);
     		}
     	}
