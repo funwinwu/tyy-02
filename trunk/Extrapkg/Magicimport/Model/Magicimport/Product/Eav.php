@@ -75,12 +75,31 @@ class Extrapkg_Magicimport_Model_Magicimport_Product_Eav extends Mage_Core_Model
 							}
 							break;
 					}				
-				}
+				}	
+				//update index.
+				//$this->reindexProductAll( $product_id );
+				
 			}
 		}catch(Exception $e){
 			echo $e;
 			exit();
 		}
+	}
+	
+	public function reindexProductAll( $product_id )
+	{
+		/*
+		//product flat.
+		$result = Mage::getModel("catalog/product_flat_indexer")->updateProduct( $product_id );		
+		*/
+		//url
+		Mage::getModel("catalog/url")->refreshProductRewrite($product_id);
+		
+		//stock status
+		Mage::getSingleton('cataloginventory/stock_status')
+            ->updateStatus($productId);
+		Mage::getModel("catalog/product")->load( $product_id )->afterCommitCallback();
+		
 	}
 	
 	public function getAttributeIdByCode( $code )
