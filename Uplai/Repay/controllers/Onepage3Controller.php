@@ -213,7 +213,11 @@ class Uplai_Repay_Onepage3Controller extends Mage_Checkout_OnepageController
         if (isset($redirectUrl)) {
             $result['redirect'] = $redirectUrl;
         }
-
+		//add by ken .to clear cart.
+		foreach( $this->getOnepage()->getQuote()->getItemsCollection() as $item ){
+			Mage::getSingleton('checkout/cart')->removeItem( $item->getId() )->save();
+		}
+		
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
     }
     
