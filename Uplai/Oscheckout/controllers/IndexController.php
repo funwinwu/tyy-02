@@ -2,7 +2,18 @@
 include( "app/code/core/Mage/Checkout/controllers/OnepageController.php" );
 class Uplai_Oscheckout_IndexController extends Mage_Checkout_OnepageController
 {
-    public function indexAction()
+    protected function _getShippingMethodsHtml()
+    {
+        $layout = $this->getLayout();
+        $update = $layout->getUpdate();
+        $update->load('oscheckout_onepage_shippingmethod');
+        $layout->generateXml();
+        $layout->generateBlocks();
+        $output = $layout->getOutput();
+        return $output;
+    }
+	
+	public function indexAction()
     {
 		 if (!Mage::helper('oscheckout')->canOnestepCheckout()) {
             Mage::getSingleton('checkout/session')->addError($this->__('The onestep checkout is disabled.'));
