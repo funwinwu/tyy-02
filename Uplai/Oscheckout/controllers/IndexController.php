@@ -12,6 +12,15 @@ class Uplai_Oscheckout_IndexController extends Mage_Checkout_OnepageController
         $output = $layout->getOutput();
         return $output;
     }
+    
+	protected function _getReviewHtml()
+    {
+        $html = <<<TEXT
+        <div class="review-info">{$this->__('This order is')}</div>
+TEXT;
+    	return $html;
+    }
+    
 	
 	public function indexAction()
     {
@@ -292,5 +301,19 @@ class Uplai_Oscheckout_IndexController extends Mage_Checkout_OnepageController
     	$response['payment'] = $info->getData('method')?$info->getMethodInstance()->getTitle():'';
     	echo json_encode( $response );
     	
-    }           
+    }    
+
+     /**
+     * Checkout status block
+     */
+    public function getTotalsHtmlAction()
+    {
+    	$layout = $this->getLayout();
+        $update = $layout->getUpdate();
+        $update->load('oscheckout_onepage_totals');
+        $layout->generateXml();
+        $layout->generateBlocks();
+        $output = $layout->getOutput();
+        echo $output;
+    }     
 }
