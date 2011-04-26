@@ -406,6 +406,12 @@ class Uplai_Oscheckout_Model_Onestep
         if (!$rate) {
             return array('error' => -1, 'message' => $this->_helper->__('Invalid shipping method.'));
         }
+        
+        /*add by ken . 20091223. start 1*/
+        $shipping_comment = Mage::app()->getRequest()->getPost('shipping_comment', false);       
+        strlen($shipping_comment) && $this->getQuote()->getShippingAddress()->setShippingComment($shipping_comment);
+        /*add by ken . 20091223. end 1*/
+        
         $this->getQuote()->getShippingAddress()
             ->setShippingMethod($shippingMethod);
         $this->getQuote()->collectTotals()
