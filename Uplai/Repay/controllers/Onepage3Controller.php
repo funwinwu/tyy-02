@@ -217,6 +217,8 @@ class Uplai_Repay_Onepage3Controller extends Mage_Checkout_OnepageController
 		foreach( $this->getOnepage()->getQuote()->getItemsCollection() as $item ){
 			Mage::getSingleton('checkout/cart')->removeItem( $item->getId() )->save();
 		}
+		Mage::getSingleton('checkout/cart')->getQuote()->collectTotals()
+                ->save();
 		
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
     }
