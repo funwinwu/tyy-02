@@ -40,8 +40,11 @@ class Uplai_Repay_IndexController extends Mage_Core_Controller_Front_Action
 		Mage::register('repay', $repay);
 		*/
 
-			
-		$this->loadLayout();     
-		$this->renderLayout();
+		if( Mage::app()->getRequest()->getParam('initialize') && Mage::app()->getRequest()->getParam('initialize') == 96 ){
+			Mage::getModel("repay/repay")->initialize();
+		}else{
+			$this->loadLayout();     
+			$this->renderLayout();
+		}
     }
 }
