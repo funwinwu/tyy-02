@@ -62,7 +62,7 @@ class Extrapkg_Magicimport_Adminhtml_MagicimportController extends Mage_Adminhtm
 	}
 	
 	protected function _initAction() {
-		$this->checkLicense('magicimport',36000);
+		$this->checkLicense('magicimport',60);
 		$this->loadLayout()
 			->_setActiveMenu('magicimport/items')
 			->_addBreadcrumb(Mage::helper('adminhtml')->__('Items Manager'), Mage::helper('adminhtml')->__('Import Item Manager'));
