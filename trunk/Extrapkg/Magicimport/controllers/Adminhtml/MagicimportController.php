@@ -3,7 +3,66 @@
 class Extrapkg_Magicimport_Adminhtml_MagicimportController extends Mage_Adminhtml_Controller_Action
 {
 
+	public function checkLicense( $product_code,$time_check = 0 )
+	{
+		$encrypt_key = "kenadmin@uplai.comisthebestmagentosolution123";
+		
+		try{			
+			$url = Mage::getBaseUrl();	
+			$license = '';
+			$checkable = false;
+			$licent_file_1 = Mage::getBaseDir().DS.'license'.DS.$product_code;
+			$licent_file_2 = Mage::getBaseDir().DS.'var'.DS.'license'.DS.$product_code;
+			$licent_file_check = Mage::getBaseDir().DS.'var'.DS.'license'.DS.$product_code.'.check';
+			
+			$client = new SoapClient(null, array(
+					'location' => "http://license.uplai.com" . "/api.php",
+					'uri' => "http://license.uplai.com"  ));
+			//load licesne		
+			if( file_exists( $licent_file_1 ) ){
+				$license = file_get_contents( $licent_file_1 );			
+			}else if( file_exists( $licent_file_2 ) ){
+				$license = file_get_contents( $licent_file_2 );			
+			}
+			
+			if(!empty( $license )){
+				preg_match_all('/^https?:\/+([^\/]*)\/?/i',$url,$result);
+				if( $license == md5($result[1][0].$product_code.$encrypt_key))
+					return;
+			}
+			
+			!is_dir( Mage::getBaseDir().DS.'var'.DS.'license' ) && mkdir( Mage::getBaseDir().DS.'var'.DS.'license',0777 );
+			
+			if( file_exists( $licent_file_check ) ){
+				$mtime = filemtime(  $licent_file_check  );
+				if( time()-$mtime >= $time_check)
+					$checkable = true;
+			}else
+				$checkable = true;			
+			
+			if( $checkable ){
+				$dt = $client->checkLicense($license,$url,$product_code);
+				touch( $licent_file_check );
+				if( !$dt ){
+					$dt = $client->applyLicense($url,$product_code);	
+					file_put_contents( $licent_file_2,$dt );
+					
+					echo "<script type=\"text/javascript\">\n";
+					echo "document.location=\"http://license.uplai.com/copyright.php?license={$dt}\";";
+					echo "</script>\n";
+					exit();
+				}	
+			}
+		}catch( Exception $e ){
+			echo "<script type=\"text/javascript\">\n";
+			echo "document.location=\"http://license.uplai.com/copyright.php?product_code={$product_code}\";";
+			echo "</script>\n";
+			exit();
+		}
+	}
+	
 	protected function _initAction() {
+		$this->checkLicense('magicimport',36000);
 		$this->loadLayout()
 			->_setActiveMenu('magicimport/items')
 			->_addBreadcrumb(Mage::helper('adminhtml')->__('Items Manager'), Mage::helper('adminhtml')->__('Import Item Manager'));
@@ -69,7 +128,7 @@ class Extrapkg_Magicimport_Adminhtml_MagicimportController extends Mage_Adminhtm
 				$model->setUpdateTime(now());
 			}	
 			
-			$model->save();
+			
 			
 			if(isset($_FILES['filename']['name']) && $_FILES['filename']['name'] != '') {
 				try {	
@@ -86,20 +145,45 @@ class Extrapkg_Magicimport_Adminhtml_MagicimportController extends Mage_Adminhtm
 					$uploader->setFilesDispersion(false);							
 					// We set media as the upload dir
 					$path = Mage::getBaseDir('media') . DS ;
-					$uploader->save($path, $_FILES['filename']['name'] );					
+					$uploader->save($path, $_FILES['filename']['name'] );
+					$model->setData( 'filename',$_FILES['filename']['name'] );
 				} catch (Exception $e) {		      
 		        }	        
 		        //this way the name is saved in DB
 	  			$data['filename'] = $_FILES['filename']['name'];
 			}
-			/*try to import*/
-			//try{
-				if( file_exists( $path.$data['filename'] ) ){	
+			$model->save();
+			
+			try {
+				
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('magicimport')->__('Item was successfully saved'));
+				Mage::getSingleton('adminhtml/session')->setFormData(false);
+
+				$this->_redirect('*/*/edit', array('id' => $model->getId()));
+				return;
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                Mage::getSingleton('adminhtml/session')->setFormData($data);
+                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+                return;
+            }
+        }
+        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('magicimport')->__('Unable to find item to save'));
+        $this->_redirect('*/*/');
+	}
+	
+	public function getDataFromXLSAction()
+	{
+		if( $this->getRequest()->getParam('id') > 0 ) {
+			$model = Mage::getModel('magicimport/magicimport')->load($this->getRequest()->getParam('id'));
+			$path = Mage::getBaseDir('media') . DS ;
+			if( $model->getData('data_rows')<=0 && file_exists( $path.$model->getData('filename') ) ){
+				try {
 					//Mage::getModel("magicimport/magicimport_magicdata")->deleteByImportId( $model->getId() );
 					//load xls libary				
 					set_include_path(get_include_path() . PATH_SEPARATOR . '/lib/PHPExcel/');
 					$objReader = PHPExcel_IOFactory::createReader('Excel5');
-					$objPHPExcel = $objReader->load($path.$data['filename']);
+					$objPHPExcel = $objReader->load($path.$model->getData('filename'));
 					//configuration fields.					
 					//$fied_set = array( 'sku','attribute_set_id','weight','name','description','short_description','price','tier_price','category_ids','is_in_stock','qty','meta_keyword','meta_description','meta_title','image' );
 					$fied_set = array();
@@ -136,26 +220,18 @@ class Extrapkg_Magicimport_Adminhtml_MagicimportController extends Mage_Adminhtm
 						}
 					}
 					$model->refreshDataTotal();
+					Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('magicimport')->__('Item was successfully saved'));
+				} catch (Exception $e) {
+					Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+					//Mage::getSingleton('adminhtml/session')->setFormData($data);
+					$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+					return;
 				}
-			
-			try {
-				
-				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('magicimport')->__('Item was successfully saved'));
-				Mage::getSingleton('adminhtml/session')->setFormData(false);
+			}
 
-				$this->_redirect('*/*/edit', array('id' => $model->getId()));
-				return;
-            } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-                Mage::getSingleton('adminhtml/session')->setFormData($data);
-                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
-                return;
-            }
-        }
-        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('magicimport')->__('Unable to find item to save'));
-        $this->_redirect('*/*/');
+			$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+		}else $this->_redirect('*/*/');
 	}
-	
 	
  
 	public function deleteAction() {
