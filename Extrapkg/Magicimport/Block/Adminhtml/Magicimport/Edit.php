@@ -19,6 +19,15 @@ class Extrapkg_Magicimport_Block_Adminhtml_Magicimport_Edit extends Mage_Adminht
             'class'     => 'save',
         ), -100);
 
+		$id = Mage::app()->getRequest()->getParam('id');
+		if( $id ){
+				$this->_addButton('getdatafromxls', array(
+						'label'     => Mage::helper('magicimport')->__('Get Data From XLS File'),
+						'onclick'   => 'setLocation(\''.$this->getUrl("*/*/getDataFromXLS",array('id'=>$id)).'\')',
+						'class'     => 'save',
+				), -100);
+
+		}
         $this->_formScripts[] = "
             function toggleEditor() {
                 if (tinyMCE.getInstanceById('magicimport_content') == null) {
