@@ -35,19 +35,7 @@
         </routers>
     </admin>
     <adminhtml>
-		<menu>
-			<repay module="repay">
-				<title>Repay</title>
-				<sort_order>71</sort_order>               
-				<children>
-					<items module="repay">
-						<title>Manage Items</title>
-						<sort_order>0</sort_order>
-						<action>repay/adminhtml_repay</action>
-					</items>
-				</children>
-			</repay>
-		</menu>
+		
 		<acl>
 			<resources>
 				<all>
