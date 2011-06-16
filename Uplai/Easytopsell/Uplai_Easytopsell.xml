@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Uplai_Easytopsell>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Uplai_Easytopsell>
+    </modules>
+</config>
