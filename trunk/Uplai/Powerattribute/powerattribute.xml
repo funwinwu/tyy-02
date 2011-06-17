@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <powerattribute_adminhtml_powerattribute_index>
+        <reference name="content">
+            <block type="powerattribute/adminhtml_powerattribute" name="powerattribute" />
+        </reference>
+    </powerattribute_adminhtml_powerattribute_index>
+</layout>
