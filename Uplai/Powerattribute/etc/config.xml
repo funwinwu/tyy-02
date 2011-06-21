@@ -117,6 +117,13 @@
             <powerattribute>
                 <class>Uplai_Powerattribute_Block</class>
             </powerattribute>
+			<!--
+			<catalog>
+				<rewrite>
+					<product_view_type_configurable>Uplai_Powerattribute_Block_Catalog_Product_View_Type_Configurable</product_view_type_configurable>
+				</rewrite>
+			</catalog>
+			-->
         </blocks>
         <helpers>
             <powerattribute>
