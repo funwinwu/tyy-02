@@ -92,6 +92,11 @@
                     </powerattribute>
                 </entities>
             </powerattribute_mysql4>
+			<catalog>
+				<rewrite>
+					<resource_eav_attribute>Uplai_Powerattribute_Model_Catalog_Resource_Eav_Attribute</resource_eav_attribute>
+				</rewrite>
+			</catalog>
         </models>
         <resources>
             <powerattribute_setup>
@@ -117,6 +122,12 @@
             <powerattribute>
                 <class>Uplai_Powerattribute_Block</class>
             </powerattribute>
+			<adminhtml>
+				<rewrite>
+					<catalog_product_attribute_edit_tab_options>Uplai_Powerattribute_Block_Adminhtml_Catalog_Product_Attribute_Edit_Tab_Options</catalog_product_attribute_edit_tab_options>
+				</rewrite>
+			</adminhtml>
+			
 			<!--
 			<catalog>
 				<rewrite>
