@@ -15,8 +15,8 @@ class Uplai_Powerattribute_Model_Catalog_Resource_Eav_Attribute extends Mage_Cat
      */
     protected function _afterSave()
     {
-        print_r($_REQUEST);
-        exit();
+        //print_r($_REQUEST);
+        //exit();
         return parent::_afterSave();
     }
 

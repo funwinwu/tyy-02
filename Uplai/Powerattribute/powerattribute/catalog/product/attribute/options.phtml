@@ -31,6 +31,9 @@
  * @see Mage_Adminhtml_Block_Catalog_Product_Attribute_Edit_Tab_Options
  */
 ?>
+
+<script type="text/javascript">var JSCOLOR_SKIN_URL = "<?php echo $this->getSkinUrl("powerattribute/jscolor/") ?>"</script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl("powerattribute/jscolor/jscolor.js");?>"></script>
 <div>
 <ul class="messages">
     <li class="notice-msg">
@@ -40,6 +43,9 @@
     </li>
 </ul>
 </div>
+<script type="text/javascript">
+Event.observe(window, 'load',function(){$('edit_form').enctype = 'multipart/form-data';});
+</script>
 
 <div class="entity-edit">
     <div class="entry-edit-head">
@@ -106,6 +112,20 @@
         <input type="hidden" id="option-count-check" value="" />
     </div>
 </div>
+
+<?php $options = Mage::getModel("powerattribute/powerattribute")->getPowerOptions($this->getAttributeObject()->getId());?>
+<?php foreach($options as $_option ):?>
+	<?php if( $_option['type'] == 'c'  ):?>
+		<script type="text/javascript">
+			Event.observe(window, 'load',function(){$('color_<?php echo $_option['option_id'];?>').value = '<?php echo trim($_option['content'],'#');?>';});
+		</script>
+	<?php else:?>
+		<script type="text/javascript">
+			Event.observe(window, 'load',function(){$('file_<?php echo $_option['option_id'];?>').innerHTML = '<img src="<?php echo Mage::getModel("powerattribute/powerattribute")->getImageUrl($_option['content']);?>" height="20"/><input type="checkbox" name="option[delete_file][<?php echo $_option['option_id'];?>]" value="1" style="width:14px;"/><span>delete</span>';});
+		</script>
+	<?php endif;?>
+<?php endforeach;?>
+
 <script type="text/javascript">
 //<![CDATA[
 var optionDefaultInputType = 'radio';
@@ -117,8 +137,8 @@ var templateText =
             '<td><input name="option[value][{{id}}][<?php echo $_store->getId() ?>]" value="{{store<?php echo $_store->getId() ?>}}" class="input-text<?php if($_store->getId()==0): ?> required-option<?php endif; ?>" type="text" <?php if ($this->getReadOnly()):?> disabled="disabled"<?php endif;?>/><\/td>'+
 <?php endforeach; ?>
             '<td><input class="input-text" type="text" name="option[order][{{id}}]" value="{{sort_order}}" <?php if ($this->getReadOnly()):?> disabled="disabled"<?php endif;?>/></td>'+
-            '<td><input class="input-text" type="text" name="option[content][{{id}}]" value=""/><\/td>'+
-            '<td width="300"><input class="input-text" type="file" name="option[file][{{id}}]" /><\/td>'+
+            '<td><input class="color" id="color_{{id}}" type="text" name="option[content][{{id}}]" value=""/><\/td>'+
+            '<td width="300"><input class="input-text" type="file" name="option[file][{{id}}]" /><div id="file_{{id}}" style="float:right"></div><\/td>'+
             '<td class="a-center"><input class="input-radio" type="{{intype}}" name="default[]" value="{{id}}" {{checked}} <?php if ($this->getReadOnly()):?> disabled="disabled"<?php endif;?>/><\/td>'+
             '<td class="a-left">'+
                 '<input type="hidden" class="delete-flag" name="option[delete][{{id}}]" value="" />'+

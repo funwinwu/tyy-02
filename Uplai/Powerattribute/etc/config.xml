@@ -35,6 +35,7 @@
         </routers>
     </admin>
     <adminhtml>
+	<!--
 		<menu>
 			<powerattribute module="powerattribute">
 				<title>Powerattribute</title>
@@ -45,10 +46,15 @@
 						<sort_order>0</sort_order>
 						<action>powerattribute/adminhtml_powerattribute</action>
 					</items>
+					<test module="powerattribute">
+						<title>Manage test</title>
+						<sort_order>0</sort_order>
+						<action>powerattribute/adminhtml_catalog_product_attribute/save</action>
+					</test>
 				</children>
 			</powerattribute>
 		</menu>
-
+	-->
 		<acl>
 			<resources>
 				<all>
@@ -141,5 +147,12 @@
                 <class>Uplai_Powerattribute_Helper</class>
             </powerattribute>
         </helpers>
+		
+		<rewrite>
+			<powerattribute_adminhtml_catalog_product_attribute>
+				<from><![CDATA[#^/admin/catalog_product_attribute/save/#]]></from>
+				<to>/powerattribute/adminhtml_catalog_product_attribute/save/</to>				
+			</powerattribute_adminhtml_catalog_product_attribute>			
+		</rewrite>	
     </global>
 </config>
