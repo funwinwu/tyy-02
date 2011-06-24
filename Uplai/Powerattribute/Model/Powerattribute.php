@@ -105,7 +105,7 @@ class Uplai_Powerattribute_Model_Powerattribute extends Mage_Core_Model_Abstract
     private function _removeAttribute( $option_id )
     {
     
-    	$query = "select * from ".Mage::getSingleton('core/resource')->getTableName('powerattribute')." where attribute_id={$data['attribute_id']} and option_id={$data['option_id']}";
+    	$query = "select * from ".Mage::getSingleton('core/resource')->getTableName('powerattribute')." where  option_id={$option_id}";
 		$option = $this->_db->fetchAll( $query );
 		//echo $query."<br>";	
 		if( empty( $option ) ){
