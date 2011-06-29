@@ -101,6 +101,7 @@
 			<catalog>
 				<rewrite>
 					<resource_eav_attribute>Uplai_Powerattribute_Model_Catalog_Resource_Eav_Attribute</resource_eav_attribute>
+					<product>Uplai_Powerattribute_Model_Catalog_Product</product>
 				</rewrite>
 			</catalog>
         </models>
