@@ -102,20 +102,48 @@ class Uplai_Powerattribute_Block_Catalog_Product_View_Type_Configurable extends 
         return $attributes;
     }
     
-    /*return base image of given product*/
-    public function getProductImage( $product )
-    {
-    	
+    public function getDefaultProduct()
+    {    	
+    	static $default_product;
+    	if( empty($default_product) ){
+	    	$pre_count = 0;    	
+	    	foreach ($this->getAllowProducts() as $_product) {
+	    		$_product->load();
+	            if( $_product->getMediaGalleryImages()->getSize() > $pre_count){
+		            $default_product = $_product;
+		            $pre_count = $_product->getMediaGalleryImages()->getSize();
+	            }
+	        }
+    	}
+        return  $default_product;        
     }
+    
     /*get Default images for configurable product.
     it will return images from child product.
     the product with most images will be selected.
     */
-    public function getProductDefaultImages()
-    {
-    	 
-    	foreach ($this->getAllowProducts() as $product) {
-            $product->getMediaGalleryImages();
-        }
+    public function getDefaultProductImage($type,$resize_w,$resize_h=0)
+    {    	
+    	!$resize_h && $resize_h = $resize_w;
+        return  Mage::helper('catalog/image')->init($this->getDefaultProduct(), $type)->resize($resize_w,$resize_h);        
+    }
+    
+    /*get Default images for configurable product.
+    it will return images from child product.
+    the product with most images will be selected.
+    */
+    public function getDefaultProductGallery()
+    {   	
+    	return $this->getDefaultProduct()->getMediaGalleryImages();
+    }
+    
+    public function getChildProductImages($type,$resize_w,$resize_h=0)
+    {    	
+    	!$resize_h && $resize_h = $resize_w;
+    	$images = array();
+    	foreach ($this->getAllowProducts() as $_product) {
+    		$images[$_product->getId()] = Mage::helper('catalog/image')->init($_product, $type)->resize($resize_w,$resize_h)->__toString(); 
+        }        
+    	return $images;
     }
 }
