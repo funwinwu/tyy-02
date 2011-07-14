@@ -142,7 +142,8 @@ class Uplai_Powerattribute_Block_Catalog_Product_View_Type_Configurable extends 
     	!$resize_h && $resize_h = $resize_w;
     	$images = array();
     	foreach ($this->getAllowProducts() as $_product) {
-    		$images[$_product->getId()] = Mage::helper('catalog/image')->init($_product, $type)->resize($resize_w,$resize_h)->__toString(); 
+    		$images[$_product->getId()]['resize'] = Mage::helper('catalog/image')->init($_product, $type)->resize($resize_w,$resize_h)->__toString(); 
+    		$images[$_product->getId()]['org'] = Mage::helper('catalog/image')->init($_product, $type)->__toString(); 
         }        
     	return $images;
     }
