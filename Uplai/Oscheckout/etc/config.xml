@@ -269,6 +269,11 @@
             <oscheckout>
                 <class>Uplai_Oscheckout_Helper</class>
             </oscheckout>
+			<checkout>
+				<rewrite>
+					<url>Uplai_Oscheckout_Helper_Url</url>
+				</rewrite>
+			</checkout>
         </helpers>
     </global>
 </config>
