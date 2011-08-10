@@ -111,7 +111,7 @@ TEXT;
             		$result['error'] = $result_billing['error'];
             }
             
-            if( !isset($result['error']) )
+            //if( !isset($result['error']) )
             	$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
         }
     }

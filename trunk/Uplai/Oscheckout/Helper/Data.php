@@ -254,4 +254,9 @@ class Uplai_Oscheckout_Helper_Data extends Mage_Core_Helper_Abstract
 
         return $guestCheckout;
     }
+	
+	public function isCheckoutEnable()
+	{
+		return Mage::getStoreConfig("checkout/options/onestep_checkout_enabled");
+	}
 }
