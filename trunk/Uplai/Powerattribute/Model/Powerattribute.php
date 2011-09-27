@@ -21,7 +21,7 @@ class Uplai_Powerattribute_Model_Powerattribute extends Mage_Core_Model_Abstract
     	return '';
     }
     
-     public function getPowerOptions( $attribute_id )
+    public function getPowerOptions( $attribute_id )
     {
     	static $options = array();
     	if( empty( $options ) ){
